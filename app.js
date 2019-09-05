@@ -7,4 +7,4 @@ app.get('/', function(req, res) {
     res.send('Vous êtes à l\'accueil');
 });
 
-app.listen(8080);
+app.listen(80);
