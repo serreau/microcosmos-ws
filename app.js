@@ -23,17 +23,20 @@ app.post('/job/insert', (req, res) => {
 });
 
 app.delete('/job/delete/:id', (req, res) => {
-	db.collection('job').deleteOne({id : req.params.id});
+	var id = req.params.id;
+	db.collection('job').deleteOne({id : id});
 	res.send();
 });
 
 app.put('/job/update/:id', (req, res) => {
-	db.collection('job').update({id : req.params.id}, req.body);
+	var id = req.params.id;
+	db.collection('job').update({id : id}, req.body);
 	res.send();
 });
 
 app.get('/job/get/:id', (req, res) => {
-    db.collection('job').find({ id: req.params.id }).toArray(function(err, results) {
+	var id = req.params.id;
+    db.collection('job').find({ id : id }).toArray(function(err, results) {
 		res.send(results);
 	});
 });
@@ -45,8 +48,33 @@ app.get('/job/get', (req, res) => {
 });
 
 app.get('/job/get/state/:state/search/:search', (req, res) => {
-    db.collection('job').find({ state : req.params.state, name : req.params.search }).toArray(function(err, results) {
+	var state = req.params.state;
+	var search = req.params.search;
+    db.collection('job').find({ state : state, name : new RegExp(search) }).toArray(function(err, results) {
 		res.send(results);
+	});
+});
+
+app.get('/job/get/owner/:owner/state/:state/search/:search', (req, res) => {
+	var owner = req.params.owner;
+	var state = req.params.state;
+	var search = req.params.search;
+    db.collection('job').find({ owner : owner, state : state, name : new RegExp(search) }).toArray(function(err, results) {
+		res.send(results);
+	});
+});
+
+app.get('/job/isowner/login/:login/jobid/:jobid', (req, res) => {
+	var login = req.params.login;
+	var jobid = req.params.jobid;
+
+    db.collection('job').find({ owner : login, id : jobid }).toArray(function(err, results) {
+		if(results.length > 0)
+			res.send(true);
+		else
+			res.send(false);
+
+
 	});
 });
 
