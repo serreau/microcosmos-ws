@@ -10,12 +10,13 @@ MongoClient.connect('mongodb://root00:root00@ds215338.mlab.com:15338/heroku_1rb0
     db = database.db('heroku_1rb0rch9');
 });
 
-/******JOB******/
-
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send('Vous êtes à l\'accueil');
 });
+
+
+/******JOB******/
 
 app.post('/job/insert', (req, res) => {
 	db.collection('job').insert(req.body);
@@ -73,8 +74,33 @@ app.get('/job/isowner/login/:login/jobid/:jobid', (req, res) => {
 			res.send(true);
 		else
 			res.send(false);
+	});
+});
 
 
+/******USER******/
+
+app.post('/user/insert', (req, res) => {
+	db.collection('user').insert(req.body);
+	res.send();
+});
+
+app.delete('/user/delete/:id', (req, res) => {
+	var id = req.params.id;
+	db.collection('user').deleteOne({id : id});
+	res.send();
+});
+
+app.put('/user/update/:id', (req, res) => {
+	var id = req.params.id;
+	db.collection('user').update({id : id}, req.body);
+	res.send();
+});
+
+app.get('/user/get/:id', (req, res) => {
+	var id = req.params.id;
+    db.collection('user').find({ id : id }).toArray(function(err, results) {
+		res.send(results);
 	});
 });
 
