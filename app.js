@@ -6,12 +6,12 @@ var app = express();
 app.use(bodyParser.json());
 
 var db = null
-MongoClient.connect('mongodb://root00:root00@ds215338.mlab.com:15338/heroku_1rb0rch9', function(err,database) {
+/*MongoClient.connect('mongodb://root00:root00@ds215338.mlab.com:15338/heroku_1rb0rch9', function(err,database) {
     db = database.db('heroku_1rb0rch9');
-});
-/*MongoClient.connect('mongodb+srv://admin:admin@cluster0-5vple.mongodb.net/test?retryWrites=true&w=majority', function(err,database) {
-    db = database.db('microcosmos-db');
 });*/
+MongoClient.connect('mongodb+srv://admin:admin@cluster0-5vple.mongodb.net/test?retryWrites=true&w=majority', function(err,database) {
+    db = database.db('microcosmos-db');
+});
 
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
@@ -114,9 +114,9 @@ app.post('/user/connect', (req, res) => {
     db.collection('user').find({login : _login, password : _password}).toArray(
     	function(err, results) {
 			if(results.length > 0)
-				res.send(true);
+				res.send({"connected" : true});
 			else
-				res.send(false);
+				res.send({"connected" : false});
 		});
 });
 
