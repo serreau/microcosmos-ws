@@ -9,6 +9,9 @@ var db = null
 MongoClient.connect('mongodb://root00:root00@ds215338.mlab.com:15338/heroku_1rb0rch9', function(err,database) {
     db = database.db('heroku_1rb0rch9');
 });
+/*MongoClient.connect('mongodb+srv://admin:admin@cluster0-5vple.mongodb.net/test?retryWrites=true&w=majority', function(err,database) {
+    db = database.db('microcosmos-db');
+});*/
 
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
@@ -19,7 +22,7 @@ app.get('/', function(req, res) {
 /******JOB******/
 
 app.post('/job/insert', (req, res) => {
-	db.collection('job').insert(req.body);
+	db.collection('job').insertOne(req.body);
 	res.send();
 });
 
@@ -81,7 +84,7 @@ app.get('/job/isowner/login/:login/jobid/:jobid', (req, res) => {
 /******USER******/
 
 app.post('/user/insert', (req, res) => {
-	db.collection('user').insert(req.body);
+	db.collection('user').insertOne(req.body);
 	res.send();
 });
 
@@ -103,5 +106,19 @@ app.get('/user/get/:id', (req, res) => {
 		res.send(results);
 	});
 });
+
+app.post('/user/connect', (req, res) => {
+	var _login = req.body.login;
+	var _password = req.body.password;
+
+    db.collection('user').find({login : _login, password : _password}).toArray(
+    	function(err, results) {
+			if(results.length > 0)
+				res.send(true);
+			else
+				res.send(false);
+		});
+});
+
 
 app.listen(process.env.PORT || 3000);
