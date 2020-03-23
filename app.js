@@ -96,7 +96,7 @@ app.delete('/user/delete/:id', (req, res) => {
 
 app.put('/user/update/:id', (req, res) => {
 	var id = req.params.id;
-	db.collection('user').update({id : id}, req.body);
+	db.collection('user').updateOne({id : id}, req.body);
 	res.send();
 });
 
@@ -107,16 +107,16 @@ app.get('/user/get/:id', (req, res) => {
 	});
 });
 
-app.post('/user/connect', (req, res) => {
+app.post('/user/exist', (req, res) => {
 	var _login = req.body.login;
 	var _password = req.body.password;
 
     db.collection('user').find({login : _login, password : _password}).toArray(
     	function(err, results) {
 			if(results.length > 0)
-				res.send({"connected" : true});
+				res.send({"exist" : true});
 			else
-				res.send({"connected" : false});
+				res.send({"exist" : false});
 		});
 });
 
