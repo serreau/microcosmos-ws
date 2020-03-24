@@ -23,7 +23,7 @@ app.get('/', function(req, res) {
 
 app.post('/job/insert', (req, res) => {
 	req.body.state = 'TODO'
-	req.body.date = Date().prototype.toUTCString()
+	req.body.date = Date().toString()
 	db.collection('job').insertOne(req.body);
 	res.send({"success" : true});
 });
