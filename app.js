@@ -22,6 +22,8 @@ app.get('/', function(req, res) {
 /******JOB******/
 
 app.post('/job/insert', (req, res) => {
+	req.body.state = 'TODO'
+	req.body.date = Date().toString()
 	db.collection('job').insertOne(req.body);
 	res.send({"success" : true});
 });
