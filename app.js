@@ -23,7 +23,7 @@ app.get('/', function(req, res) {
 
 app.post('/job/insert', (req, res) => {
 	db.collection('job').insertOne(req.body);
-	res.send();
+	res.send({"success" : true});
 });
 
 app.delete('/job/delete/:id', (req, res) => {
