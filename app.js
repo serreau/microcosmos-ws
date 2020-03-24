@@ -38,6 +38,12 @@ app.put('/job/update/:id', (req, res) => {
 	res.send();
 });
 
+app.get('/job/get', (req, res) => {
+    db.collection('job').find().toArray(function(err, results) {
+		res.send(results);
+	});
+});
+
 app.get('/job/get/:id', (req, res) => {
 	var id = req.params.id;
     db.collection('job').find({ id : id }).toArray(function(err, results) {
@@ -45,13 +51,7 @@ app.get('/job/get/:id', (req, res) => {
 	});
 });
 
-app.get('/job/get', (req, res) => {
-    db.collection('job').find().toArray(function(err, results) {
-		res.send(results);
-	});
-});
-
-app.get('/job/get/state/:state/search/:search', (req, res) => {
+app.get('/job/get/state/:state/search/:search?', (req, res) => {
 	var state = req.params.state;
 	var search = req.params.search;
     db.collection('job').find({ state : state, name : new RegExp(search) }).toArray(function(err, results) {
