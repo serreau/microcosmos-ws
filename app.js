@@ -87,7 +87,7 @@ app.get('/job/isowner/login/:login/jobid/:jobid', (req, res) => {
 
 app.post('/user/insert', (req, res) => {
 	db.collection('user').insertOne(req.body);
-	res.send();
+	res.send({"success" : true});
 });
 
 app.delete('/user/delete/:id', (req, res) => {
