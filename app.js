@@ -24,8 +24,11 @@ app.get('/', function(req, res) {
 app.post('/job/insert', (req, res) => {
 	req.body.state = 'TODO'
 	req.body.date = new Date().toISOString()
-	db.collection('job').insertOne(req.body);
-	res.send({"success" : true});
+	db.collection('user').findOne({mail : req.body.owner}, function(err, result){
+		req.body.ownerFirstname = result.firstname
+		db.collection('job').insertOne(req.body);
+		res.send({"success" : true});
+	})
 });
 
 app.delete('/job/delete/:id', (req, res) => {
