@@ -4,9 +4,10 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const multer = require('multer');
 
+multer({dest : './user/image/'});
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './upload/image/')
+        cb(null, './user/image/')
     },
     filename: function (req, file, cb) {
         cb(null, req.body.owner)
@@ -139,12 +140,12 @@ app.post('/user/exist', (req, res) => {
 		});
 });
 
-app.post('/files/image', upload.single('image'), function (req, res, next) {
+app.post('/user/image', upload.single('image'), function (req, res, next) {
   res.send({success : true});
 });
 
-app.get('/files/image/:owner', (req, res) => {
-  const file = 'upload/image/'+req.params.owner;
+app.get('/user/image/:owner', (req, res) => {
+  const file = 'user/image/'+req.params.owner;
   res.download(file); // Set disposition and send it.
 });
 
