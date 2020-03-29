@@ -1,6 +1,20 @@
-var express = require('express');
-var MongoClient = require('mongodb').MongoClient;
-var bodyParser = bodyParser = require('body-parser');
+const express = require('express');
+const MongoClient = require('mongodb').MongoClient;
+const bodyParser = require('body-parser');
+const request = require('request');
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './upload/image/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, req.body.owner)
+  }
+});
+
+const upload = multer({storage : storage});
+
 
 var app = express();
 app.use(bodyParser.json());
@@ -15,7 +29,7 @@ MongoClient.connect('mongodb://root00:root00@ds215338.mlab.com:15338/heroku_1rb0
 
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
-    res.send('Vous êtes à l\'accueil');
+    res.send('Bienvenue sur MICROCOSMOS');
 });
 
 
@@ -125,5 +139,13 @@ app.post('/user/exist', (req, res) => {
 		});
 });
 
+app.post('/files/image', upload.single('image'), function (req, res, next) {
+  res.send({success : true});
+});
+
+app.get('/files/image/:owner', (req, res) => {
+  const file = 'upload/image/'+req.params.owner;
+  res.download(file); // Set disposition and send it.
+});
 
 app.listen(process.env.PORT || 3000);
