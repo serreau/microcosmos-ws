@@ -134,9 +134,9 @@ app.post('/user/exist', (req, res) => {
     db.collection('user').find({mail : _mail, password : _password}).toArray(
     	function(err, results) {
 			if(results.length > 0)
-				res.send({"exist" : true});
+				res.send({"success" : true});
 			else
-				res.send({"exist" : false});
+				res.send({"success" : false});
 		});
 });
 
