@@ -141,7 +141,7 @@ app.post('/user/exist', (req, res) => {
 });
 
 app.post('/user/image', upload.single('image'), function (req, res, next) {
-	var s = req.file.path
+	var s = req.file
 	console.log('PATH : '+s)
   res.send({success : true});
 });
