@@ -128,10 +128,10 @@ app.get('/user/get/:id', (req, res) => {
 });
 
 app.post('/user/exist', (req, res) => {
-	var _login = req.body.login;
+	var _mail = req.body.mail;
 	var _password = req.body.password;
 
-    db.collection('user').find({mail : _login, password : _password}).toArray(
+    db.collection('user').find({mail : _mail, password : _password}).toArray(
     	function(err, results) {
 			if(results.length > 0)
 				res.send({"exist" : true});
