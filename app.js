@@ -141,12 +141,14 @@ app.post('/user/exist', (req, res) => {
 });
 
 app.post('/user/image', upload.single('image'), function (req, res, next) {
+	var s = req.file.path
+	console.log('PATH : '+s)
   res.send({success : true});
 });
 
 app.get('/user/image/:owner', (req, res) => {
-  const file = 'user/image/'+req.params.owner;
-  res.download(file); // Set disposition and send it.
+  const file = './user/image/'+req.params.owner;
+  res.download(file);
 });
 
 app.listen(process.env.PORT || 3000);
