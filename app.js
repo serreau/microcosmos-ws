@@ -41,6 +41,7 @@ app.post('/job/insert', (req, res) => {
 	req.body.date = new Date().toISOString()
 	db.collection('user').findOne({mail : req.body.owner}, function(err, result){
 		req.body.ownerFirstname = result.firstname
+		req.body.ownerMail = result.mail
 		db.collection('job').insertOne(req.body);
 		res.send({"success" : true});
 	})
