@@ -1,5 +1,5 @@
 const express = require('express');
-const MongoClient = require('mongodb').MongoClient;
+const {MongoClient, ObjectId} = require('mongodb');
 const bodyParser = require('body-parser');
 const request = require('request');
 const multer = require('multer');
@@ -67,7 +67,7 @@ app.get('/job/get', (req, res) => {
 
 app.get('/job/get/:id', (req, res) => {
 	var id = req.params.id;
-    db.collection('job').find({ id : id }).toArray(function(err, results) {
+    db.collection('job').findOne({ _id : ObjectId(id) }, function(err, results) {
 		res.send(results);
 	});
 });
