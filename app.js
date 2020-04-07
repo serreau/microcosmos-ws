@@ -34,6 +34,19 @@ app.get('/', function(req, res) {
 });
 
 
+/******OFFER******/
+
+app.post('/offer/insert', (req, res) => {
+	req.body.state = 'WAITING'
+	req.body.date = new Date().toISOString()
+	db.collection('user').findOne({mail : req.body.owner}, function(err, result){
+		req.body.ownerFirstname = result.firstname
+		req.body.ownerMail = result.mail
+		db.collection('offer').insertOne(req.body);
+		res.send({"success" : true});
+	})
+});
+
 /******JOB******/
 
 app.post('/job/insert', (req, res) => {
