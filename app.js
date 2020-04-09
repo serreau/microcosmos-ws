@@ -43,6 +43,7 @@ app.post('/offer/insert', (req, res) => {
 	res.send({"success" : true});
 });
 
+
 /******JOB******/
 
 app.post('/job/insert', (req, res) => {
@@ -98,12 +99,12 @@ app.get('/job/get/owner/:owner/state/:state/search/:search', (req, res) => {
 	});
 });
 
-app.get('/job/isowner/login/:login/jobid/:jobid', (req, res) => {
-	var login = req.params.login;
+app.get('/job/isowner/:userid/:jobid', (req, res) => {
+	var userid = req.params.userid;
 	var jobid = req.params.jobid;
 
-    db.collection('job').find({ owner : login, id : jobid }).toArray(function(err, results) {
-		if(results.length > 0)
+    db.collection('job').findOne({ owner : userid, _id : ObjectId(jobid) }, function(err, results) {
+		if(results != null)
 			res.send(true);
 		else
 			res.send(false);
