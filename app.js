@@ -105,9 +105,9 @@ app.get('/job/isowner/:userid/:jobid', (req, res) => {
 
     db.collection('job').findOne({ owner : userid, _id : ObjectId(jobid) }, function(err, results) {
 		if(results != null)
-			res.send(true);
+			res.send({"success" : true});
 		else
-			res.send(false);
+			res.send({"success" : false});
 	});
 });
 
