@@ -36,6 +36,26 @@ app.get('/', function(req, res) {
 
 /******OFFER******/
 
+app.get('/offer/get', (req, res) => {
+    db.collection('offer').find().toArray(function(err, results) {
+		res.send(results);
+	});
+});
+
+app.get('/offer/get/:id', (req, res) => {
+	var id = req.params.id;
+    db.collection('offer').findOne({ _id : ObjectId(id) }, function(err, results) {
+		res.send(results);
+	});
+});
+
+app.get('/offer/getby/job/:jobid', (req, res) => {
+	var jobid = req.params.jobid;
+    db.collection('offer').find({ jobId : jobid}).toArray(function(err, results) {
+		res.send(results);
+	});
+});
+
 app.post('/offer/insert', (req, res) => {
 	req.body.state = 'WAITING'
 	req.body.date = new Date().toISOString()
