@@ -59,8 +59,12 @@ app.get('/offer/getby/job/:jobid', (req, res) => {
 app.post('/offer/insert', (req, res) => {
 	req.body.state = 'WAITING'
 	req.body.date = new Date().toISOString()
-	db.collection('offer').insertOne(req.body);
-	res.send({"success" : true});
+	db.collection('user').findOne({mail : req.body.owner}, function(err, result){
+		req.body.ownerFirstname = result.firstname
+		req.body.ownerMail = result.mail
+		db.collection('offer').insertOne(req.body);
+		res.send({"success" : true});
+	})
 });
 
 
