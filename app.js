@@ -60,7 +60,7 @@ app.get('/offer/getby/job/:jobid', (req, res) => {
 app.get('/offer/getby/owner/:userid/job/:jobid', (req, res) => {
 	var userid = req.params.userid;
 	var jobid = req.params.jobid;
-    db.collection('offer').findOne({owner : userid, jobId : jobid}, function(err, results) {
+    db.collection('offer').find({owner : userid, jobId : jobid}).toArray(function(err, results) {
 		res.send(results);
 	});
 });
