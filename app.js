@@ -81,19 +81,15 @@ app.post('/offer/buy', (req, res) => {
 	db.collection('offer').findOne({_id : ObjectId(offerid)}, function(err, result){
 		var jobid = result.jobId;
 		db.collection('offer').find({ jobId : jobid}).toArray(function(err, results) {
-
 			for (var i = 0; i < results.length; i++) {
-				console.log("RESULT : "+results[i]._id);
-				console.log("offerid : "+offerid);
-				console.log("ObjectId(offerid) : "+ObjectId(offerid));
 				if(results[i]._id != offerid){
 					db.collection('offer').updateOne({ _id : ObjectId(results[i]._id) },{ $set: { state: "REFUSED" }});
 				} else {
 					db.collection('offer').updateOne({ _id : ObjectId(results[i]._id) },{ $set: { state: "ACCEPTED" }});
 				}
 			}
-			res.send()
 		})
+		res.send({"success" : true});
 	});
 });
 
