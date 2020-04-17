@@ -76,6 +76,48 @@ app.post('/offer/insert', (req, res) => {
 	})
 });
 
+app.post('/offer/buy', (req, res) => {
+	var offerid = req.body.offerId;
+	db.collection('offer').findOne({_id : ObjectId(offerid)}, function(err, result){
+		var jobid = result.jobId;
+		db.collection('offer').find({ jobId : jobid}).toArray(function(err, results) {
+
+			for (var i = 0; i < results.length; i++) {
+				console.log("RESULT : "+results[i]._id);
+				console.log("offerid : "+offerid);
+				console.log("ObjectId(offerid) : "+ObjectId(offerid));
+				if(results[i]._id != offerid){
+					db.collection('offer').updateOne({ _id : ObjectId(results[i]._id) },{ $set: { state: "REFUSED" }});
+				} else {
+					db.collection('offer').updateOne({ _id : ObjectId(results[i]._id) },{ $set: { state: "ACCEPTED" }});
+				}
+			}
+			res.send()
+		})
+	});
+});
+
+/*app.post('/offer/sell', (req, res) => {
+	var offerid = req.body.offerId;
+	console.log(offerid);
+	db.collection('offer').findOne({_id : ObjectId(offerid)}, function(err, result){
+		var jobid = result.jobId;
+		console.log(jobid);
+		db.collection('offer').find({ jobId : jobid}).toArray(function(err, results) {
+			console.log(results);
+
+			for (var i = 0; i < results.length; i++) {
+				if(results[i]._id != ObjectId(offerid)){
+					db.collection('offer').updateOne({ _id : ObjectId(results[i]._id) },{ $set: { state: "WAITING" }});
+				} else {
+					db.collection('offer').updateOne({ _id : ObjectId(results[i]._id) },{ $set: { state: "WAITING" }});
+				}
+			}
+			res.send()
+		})
+	});
+});*/
+
 
 /******JOB******/
 
